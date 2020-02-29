@@ -1,0 +1,12 @@
+host github.com
+    hashknownhosts no
+    identitiesonly yes
+    identityfile ~/.ssh/my_rsa.pub
+    permitlocalcommand no
+    # git hates the default localcommand!
+
+host *
+    hashknownhosts no
+
+    localcommand echo -e "\033[30;43m\033[KConnecting to %n via [%h]:%p...\033[0m"
+    permitlocalcommand yes
