@@ -21,6 +21,8 @@ COPY_SKEL() {
 
 RET=0
 
+cd $HOME
+
 echo ""
 SECTION_BEGIN "Terminal color test..."
 
@@ -86,6 +88,47 @@ if IS_OSX; then
     fi
 fi
 
+STEP_BEGIN "Detecting dependency 'boxes'..."
+if which boxes 2>&1 >/dev/null; then
+    STEP_OK
+else
+    STEP_FAIL
+
+    CONFIRM_OR_ABORT "Automatically install 'boxes'?"
+
+    if IS_OSX; then
+        brew install boxes || ABORT
+    else
+        sudo apt install boxes || ABORT
+    fi
+fi
+
+STEP_BEGIN "Detecting dependency 'colorize'..."
+if which colorize 2>&1 >/dev/null; then
+    STEP_OK
+else
+    STEP_FAIL
+
+    CONFIRM_OR_ABORT "Automatically install 'colorize'?"
+
+    if IS_OSX; then
+        brew install boxes || ABORT
+
+        mkdir -p dev
+
+        pushd dev >/dev/null
+
+        # http://cgit.refcnt.org/colorize.git/tree/README
+        git clone git://refcnt.org/colorize.git || ABORT
+        make || ABORT
+        cp colorize /usr/local/bin || ABORT
+
+        popd >/dev/null
+    else
+        sudo apt install colorize
+    fi
+fi
+
 STEP_BEGIN "Detecting Yubikey SSH dependencies..."
 
 if IS_OSX; then
@@ -105,11 +148,21 @@ if IS_OSX; then
 else
     # $ sudo apt install -y wget gnupg2 gnupg-agent dirmngr cryptsetup scdaemon pcscd secure-delete hopenpgp-tools yubikey-personalization
 
-    STEP_ABORT "Not implemented"            # TODO!!!
-
-    STEP_FAIL
-
     PACKAGES="wget gnupg2 gnupg-agent dirmngr cryptsetup scdaemon pcscd secure-delete hopenpgp-tools yubikey-personalization"
+
+    EXPECTED=$(echo "$PACKAGES" | wc -w)
+    ACTUAL=$(sudo apt -qq list $PACKAGES 2>/dev/null | grep '\[installed\]' | wc -l)
+
+    if [[ $EXPECTED == $ACTUAL ]]; then
+        STEP_OK
+    else
+        STEP_FAIL
+
+        echo "At least one of the following packages is missing:" | INDENT | colorize $C_NOTE2
+        echo "$PACKAGES" | INDENT | INDENT | colorize $C_NOTE
+        CONFIRM_OR_ABORT "Automatically install missing packages using 'apt'?"
+        sudo apt install $PACKAGES
+    fi
 fi
 
 WORKDIR=$(dirname "$0")
