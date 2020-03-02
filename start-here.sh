@@ -112,15 +112,17 @@ else
     CONFIRM_OR_ABORT "Automatically install 'colorize'?"
 
     if IS_OSX; then
-        brew install boxes || ABORT
-
         mkdir -p dev
 
         pushd dev >/dev/null
 
         # http://cgit.refcnt.org/colorize.git/tree/README
         git clone git://refcnt.org/colorize.git || ABORT
+
+        cd colorize || ABORT
+
         make || ABORT
+
         cp colorize /usr/local/bin || ABORT
 
         popd >/dev/null
