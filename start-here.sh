@@ -21,8 +21,6 @@ COPY_SKEL() {
 
 RET=0
 
-cd $HOME
-
 echo ""
 SECTION_BEGIN "Terminal color test..."
 
@@ -112,9 +110,9 @@ else
     CONFIRM_OR_ABORT "Automatically install 'colorize'?"
 
     if IS_OSX; then
-        mkdir -p dev
+        pushd $HOME >/dev/null
 
-        pushd dev >/dev/null
+        { mkdir dev && cd dev } || ABORT
 
         # http://cgit.refcnt.org/colorize.git/tree/README
         git clone git://refcnt.org/colorize.git || ABORT
