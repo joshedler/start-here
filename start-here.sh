@@ -73,10 +73,14 @@ if IS_OSX; then
         CONFIRM_OR_ABORT "Automatically install 'homebrew'?"
 
         if curl -sN https://brew.sh | grep -q '/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;'; then
-            echo -e "\n${C_FG_YELLOW}Installing 'homebrew'...${C_RESET}"
+            echo -e "\n${C_FG_YELLOW}Installing 'homebrew' using ruby...${C_RESET}"
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+        elif curl -sN https://brew.sh | grep -q '/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)&quot;'; then
+            echo -e "\n${C_FG_YELLOW}Installing 'homebrew' using bash...${C_RESET}"
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         else
-            echo -e "${C_FG_RED}Unable to confirm brew installation step from https://brew.sh/${C_RESET}"
+            echo -e "${C_FG_RED}Unable to automatically install 'homebrew'. Visit https://brew.sh/ to manually install, and then re-run this script.${C_RESET}"
             exit 1
         fi
     fi
