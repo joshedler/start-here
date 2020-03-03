@@ -79,6 +79,7 @@ if IS_OSX; then
         elif curl -sN https://brew.sh | grep -q '/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)&quot;'; then
             echo -e "\n${C_FG_YELLOW}Installing 'homebrew' using bash...${C_RESET}"
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+            stty echo on
         else
             echo -e "${C_FG_RED}Unable to automatically install 'homebrew'. Visit https://brew.sh/ to manually install, and then re-run this script.${C_RESET}"
             exit 1
@@ -112,7 +113,7 @@ else
     if IS_OSX; then
         pushd $HOME >/dev/null
 
-        { mkdir dev && cd dev } || ABORT
+        mkdir dev && cd dev
 
         # http://cgit.refcnt.org/colorize.git/tree/README
         git clone git://refcnt.org/colorize.git || ABORT
