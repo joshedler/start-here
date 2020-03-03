@@ -167,6 +167,34 @@ else
 fi
 
 WORKDIR=$(dirname "$0")
+
+FOLDER=~/.gnupg
+
+STEP_BEGIN "Detecting $FOLDER..."
+
+if [[ -d $FOLDER && -f $FOLDER/gpg.conf && -f $FOLDER/gpg-agent.conf ]]; then
+    STEP_OK
+else
+    STEP_FAIL "$FOLDER is missing or missing some files!"
+
+    if CONFIRM "Create skeleton $FOLDER?"; then
+        [[ ! -d $FOLDER ]] && { mkdir $FOLDER || ABORT; }
+        chmod 700 $FOLDER || ABORT
+
+        COPY_SKEL $WORKDIR/gpg.conf $FOLDER/gpg.conf
+        COPY_SKEL $WORKDIR/gpg-agent.conf $FOLDER/gpg-agent.conf
+
+        echo ""
+        ls -laFhd $FOLDER
+        echo ""
+        ls -laFh $FOLDER/
+    else
+        echo -e "\n${C_FG_RED}${FOLDER} not created.${C_RESET}"
+        echo -e "\n${C_FG_YELLOW}Why did you run this script?${C_RESET}"
+        exit 1
+    fi
+fi
+
 FOLDER=~/.ssh
 
 STEP_BEGIN "Detecting $FOLDER..."
