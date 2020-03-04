@@ -79,7 +79,7 @@ if IS_OSX; then
         elif curl -sN https://brew.sh | grep -q '/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)&quot;'; then
             echo -e "\n${C_FG_YELLOW}Installing 'homebrew' using bash...${C_RESET}"
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-            stty echo on
+            stty echo
         else
             echo -e "${C_FG_RED}Unable to automatically install 'homebrew'. Visit https://brew.sh/ to manually install, and then re-run this script.${C_RESET}"
             exit 1
@@ -87,7 +87,7 @@ if IS_OSX; then
     fi
 fi
 
-STEP_BEGIN "Detecting dependency 'boxes'..."
+STEP_BEGIN "\nDetecting dependency 'boxes'..."
 if which boxes 2>&1 >/dev/null; then
     STEP_OK
 else
@@ -102,7 +102,7 @@ else
     fi
 fi
 
-STEP_BEGIN "Detecting dependency 'colorize'..."
+STEP_BEGIN "\nDetecting dependency 'colorize'..."
 if which colorize 2>&1 >/dev/null; then
     STEP_OK
 else
@@ -130,7 +130,7 @@ else
     fi
 fi
 
-STEP_BEGIN "Detecting Yubikey SSH dependencies..."
+STEP_BEGIN "\nDetecting Yubikey SSH dependencies..."
 
 if IS_OSX; then
     # $ brew install gnupg yubikey-personalization hopenpgp-tools ykman pinentry-mac
@@ -170,7 +170,7 @@ WORKDIR=$(dirname "$0")
 
 FOLDER=~/.gnupg
 
-STEP_BEGIN "Detecting $FOLDER..."
+STEP_BEGIN "\nDetecting $FOLDER..."
 
 if [[ -d $FOLDER && -f $FOLDER/gpg.conf && -f $FOLDER/gpg-agent.conf ]]; then
     STEP_OK
@@ -197,7 +197,7 @@ fi
 
 FOLDER=~/.ssh
 
-STEP_BEGIN "Detecting $FOLDER..."
+STEP_BEGIN "\nDetecting $FOLDER..."
 
 if [[ -d $FOLDER && -f $FOLDER/my_rsa.pub && -f $FOLDER/config ]]; then
     STEP_OK

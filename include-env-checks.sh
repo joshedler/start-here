@@ -65,7 +65,7 @@ if THIS_IS_AN_INCLUDE_FILE; then
         fi
     }
 
-    STEP_BEGIN()     { echo -n "$1"; }
+    STEP_BEGIN()     { echo -ne "${C_FG_WHITE}${1}${C_RESET}"; }
     STEP_OK()        { echo -e "${C_FG_GREEN}OK${C_RESET}"; [[ -n $1 ]] && echo -e "${C_FG_BLUE}$1${C_RESET}" | INDENT; }
     STEP_FAIL()      { echo -e "${C_FG_RED}FAIL${C_RESET}"; [[ -n $1 ]] && echo -e "${C_FG_RED}$1${C_RESET}" | INDENT; }
     STEP_ABORT()     { STEP_FAIL "$1"; exit 1; }
