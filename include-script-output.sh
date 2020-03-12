@@ -3,7 +3,7 @@
 # h/t: https://stackoverflow.com/questions/2683279/how-to-detect-if-a-script-is-being-sourced
 
 # https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit
-C_ESC_256_PRE='\033[38:5:'
+C_ESC_256_PRE='\033[38;5;'
 C_FG_DIM=${C_ESC_256_PRE}8m
 C_FG_GRAY=${C_ESC_256_PRE}7m
 C_FG_RED=${C_ESC_256_PRE}9m

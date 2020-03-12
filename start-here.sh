@@ -224,14 +224,22 @@ fi
 
 if ! grep -q my_rsa.pub $FOLDER/config; then
     echo -e "\n${C_FG_YELLOW}WARNING: $FOLDER/config is not using my_rsa.pub${C_RESET}"
-    echo -e "Manually edit the file to fix this issue."
+    echo -e "Manually edit the file to fix this issue. Re-run this script when complete."
     RET=1
 fi
 
 if ls $FOLDER/id_rsa_*.pub >/dev/null 2>&1; then
     echo -e "\n${C_FG_YELLOW}WARNING: $(ls $FOLDER/id_rsa_*.pub) exists.${C_RESET}"
-    echo -e "Manually clean-up $FOLDER/ to fix this issue."
+    echo -e "Manually clean-up $FOLDER/ to fix this issue. Re-run this script when complete"
     RET=1
+fi
+
+if [[ $RET == 0 ]]; then
+
+    if ! gpg -k 0xA9DB11547CAE3081; then
+        gpg --import $WORKDIR/my-public-key.txt
+    fi
+
 fi
 
 if [[ $RET == 0 ]]; then
