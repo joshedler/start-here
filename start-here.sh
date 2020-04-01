@@ -240,9 +240,14 @@ if [[ $RET == 0 ]]; then
         gpg --import $WORKDIR/my-public-key.txt
     fi
 
-fi
+    echo -e "\n${C_FG_YELLOW}In order to use the hardware security key for SSH access, you must set the following environment variables first:${C_RESET}"
+    echo '$ export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)'
+    echo '$ export GPG_TTY=$(tty)'
 
-if [[ $RET == 0 ]]; then
+    echo -e "\n${C_FG_YELLOW}You can test your configuraiton by inserting the hardware security key and issuing the following commands:${C_RESET}"
+    echo '$ gpg --card-status'
+    echo '$ ssh -T git@github.com'
+
     echo -e "\n${C_FG_GREEN}You are ready for the next step in the process!${C_RESET}\n"
 else
     echo -e "\n${C_FG_CYAN}You can re-run $0 to check that everything is properly fixed.${C_RESET}\n"
