@@ -22,6 +22,14 @@ COPY_SKEL() {
 RET=0
 
 echo ""
+SECTION_BEGIN "Verifying script location..."
+if [[ "$(realpath $(dirname $0))" == "${HOME}/dev/start-here" ]]; then
+    STEP_OK
+else
+    STEP_ABORT "Relocate this script to ${HOME}/dev/start-here and try again."
+fi
+
+echo ""
 SECTION_BEGIN "Terminal color test..."
 
 echo ""
