@@ -203,6 +203,17 @@ else
     fi
 fi
 
+STEP_BEGIN "\nDetecting pinentry-program..."
+
+if [[ -f $(grep ^pinentry-program $HOME/.gnupg/gpg-agent.conf | awk '{ print $2 }') ]]; then
+    STEP_OK
+else
+    STEP_FAIL "$HOME/.gnupg/gpg-agent.conf specifies an invalid pinentry-program"
+    echo "Manually edit the file to fix this issue. Re-run this script when complete."
+
+    exit 1
+fi
+
 FOLDER=~/.ssh
 
 STEP_BEGIN "\nDetecting $FOLDER..."
@@ -249,12 +260,15 @@ if [[ $RET == 0 ]]; then
     fi
 
     echo -e "\n${C_FG_YELLOW}In order to use the hardware security key for SSH access, you must set the following environment variables first:${C_RESET}"
-    echo '$ export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)'
-    echo '$ export GPG_TTY=$(tty)'
+    echo 'export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)'
+    echo 'export GPG_TTY=$(tty)'
 
     echo -e "\n${C_FG_YELLOW}You can test your configuraiton by inserting the hardware security key and issuing the following commands:${C_RESET}"
-    echo '$ gpg --card-status'
-    echo '$ ssh -T git@github.com'
+    echo 'gpg --card-status'
+    echo 'ssh -T git@github.com'
+
+    echo -e "\n${C_FG_YELLOW}You can reset gpg-agent state with the following command:${C_RESET}"
+    echo "gpg-connect-agent updatestartuptty /bye > /dev/null"
 
     echo -e "\n${C_FG_GREEN}You are ready for the next step in the process!${C_RESET}\n"
 else
