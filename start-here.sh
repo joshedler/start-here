@@ -96,7 +96,7 @@ if IS_OSX; then
 fi
 
 STEP_BEGIN "\nDetecting dependency 'boxes'..."
-if which boxes 2>&1 >/dev/null; then
+if which boxes >/dev/null 2>&1; then
     STEP_OK
 else
     STEP_FAIL
@@ -111,7 +111,7 @@ else
 fi
 
 STEP_BEGIN "\nDetecting dependency 'colorize'..."
-if which colorize 2>&1 >/dev/null; then
+if which colorize >/dev/null 2>&1; then
     STEP_OK
 else
     STEP_FAIL

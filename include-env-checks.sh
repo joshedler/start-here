@@ -19,7 +19,7 @@ THIS_IS_AN_INCLUDE_FILE() {
 }
 
 if THIS_IS_AN_INCLUDE_FILE; then
-    source $(dirname "$0")/include-script-output.sh || exit 1
+    source $(realpath $(dirname ${BASH_SOURCE[0]}))/include-script-output.sh || exit 1
 
     ABORT() {
         echo ""
